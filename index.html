@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quiz Website</title>
+    <title>2425 KSTIA 수능</title>
     <style>
       body {
         display: flex;
@@ -12,6 +12,41 @@
         height: 100vh;
         margin: 0;
         font-family: Arial, sans-serif;
+      }
+      #begin-page {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+      }
+      #begin-page img {
+        max-width: 800px;
+        height: auto;
+        margin-bottom: 20px;
+        border-radius: 8px;
+      }
+      #begin-page h1 {
+        font-size: 24px;
+        margin: 10px 0;
+      }
+      #begin-page p {
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 20px;
+      }
+      #begin-page button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+      }
+      #begin-page button:hover {
+        background-color: #0056b3;
       }
       #quiz-container {
         text-align: center;
@@ -39,7 +74,30 @@
     </style>
   </head>
   <body>
-    <div id="quiz-container">
+    <!-- 시작화면 -->
+    <div id="begin-page">
+      <img
+        id="begin-image"
+        src="./images/start_page1.png"
+        alt="Begin Image"
+        style="display: block"
+      />
+      <img
+        id="begin-image"
+        src="./images/start_page2.png"
+        alt="Begin Image"
+        style="display: block"
+      />
+      <h1>
+        2025학년도 대학수학능력시험 8.8교시 관광스키영역에 오신 것을 환영합니다!
+      </h1>
+      <p>안내 사항을 잘 읽은 후 시험을 시작하세요.</p>
+      <p>-다음 문제 버튼을 누르면 이전 문제로 돌아올 수 없습니다.</p>
+      <p>-시험 시간은 제한이 없습니다.</p>
+      <button onclick="startQuiz()">시작하기</button>
+    </div>
+    <!-- 문항지 화면 -->
+    <div id="quiz-container" style="display: none">
       <div id="question-number"></div>
       <div id="question"></div>
       <img
@@ -57,8 +115,28 @@
       <button onclick="nextQuestion()">다음 문제</button>
     </div>
     <!-- 결과화면 -->
-    <div id="result" style="display: none">
+    <div id="result" style="display: none; text-align: center">
+      <img
+        id="result-image"
+        src="./images/result_code.png"
+        alt="Result Image"
+        style="max-width: 600px; margin-bottom: 20px"
+      />
       <h2>점수: <span id="score"></span>/100</h2>
+      <p>구글 폼을 통해 자격증을 신청하세요!</p>
+      <a
+        id="result-link"
+        href="https://forms.gle/7dP5sNs25Xkk2xqP8"
+        target="_blank"
+        style="
+          display: block;
+          margin-top: 10px;
+          font-size: 16px;
+          color: #007bff;
+          text-decoration: none;
+        "
+        >자격증 신청 폼
+      </a>
     </div>
     <!-- 문항 -->
     <script>
@@ -317,6 +395,12 @@
         // Problem from 1 to 20
       ];
 
+      function startQuiz() {
+        document.getElementById('begin-page').style.display = 'none';
+        document.getElementById('quiz-container').style.display = 'block';
+        loadQuestion();
+      }
+
       let currentQuestion = 0;
       let score = 0;
       // 문제 불러오기 함수
@@ -370,9 +454,11 @@
 
       function nextQuestion() {
         const q = questions[currentQuestion];
+        // 점수 합산
         if (q.selectedAnswer === q.answer) {
           score += 5;
         }
+        // 다음 질문으로 이동
         currentQuestion++;
         if (currentQuestion < questions.length) {
           loadQuestion();
